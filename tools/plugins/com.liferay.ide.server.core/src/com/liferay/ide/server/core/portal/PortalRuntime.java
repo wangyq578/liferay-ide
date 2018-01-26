@@ -413,7 +413,7 @@ public class PortalRuntime extends RuntimeDelegate implements ILiferayRuntime, P
             }
             File javac = new File( javacPath.toString() );
 
-            if( !FileUtil.exists( javac ) )
+            if( FileUtil.notExists( javac ) )
             {
                 return new Status( IStatus.WARNING, LiferayServerCore.PLUGIN_ID, 0, Msgs.warningjre, null );
             }
