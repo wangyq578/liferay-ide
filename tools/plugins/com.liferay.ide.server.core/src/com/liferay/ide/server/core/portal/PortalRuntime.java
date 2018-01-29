@@ -261,7 +261,7 @@ public class PortalRuntime extends RuntimeDelegate implements ILiferayRuntime, P
         return getVMInstallTypeId() == null;
     }
 
-    private boolean isVMMinimumVersion( String javaVersion, int minimumVersion )
+    private boolean isVMRequireVersion( String javaVersion, int requireVersion )
     {
         Integer version = null;
         int index = javaVersion.indexOf( '.' );
@@ -287,7 +287,7 @@ public class PortalRuntime extends RuntimeDelegate implements ILiferayRuntime, P
         }
 
         // If we have a version, and it's less than the minimum, fail the check
-        if( version != null && version.intValue() < minimumVersion )
+        if( version != null && version.intValue() != requireVersion )
         {
             return false;
         }
@@ -387,7 +387,7 @@ public class PortalRuntime extends RuntimeDelegate implements ILiferayRuntime, P
             {
                 String javaVersion = ( (IVMInstall2) vmInstall ).getJavaVersion();
 
-                if( javaVersion != null && !isVMMinimumVersion( javaVersion, 108 ) )
+                if( javaVersion != null && !isVMRequireVersion( javaVersion, 108 ) )
                 {
                     return new Status( IStatus.ERROR, LiferayServerCore.PLUGIN_ID, 0, Msgs.errorJRE80, null );
                 }
