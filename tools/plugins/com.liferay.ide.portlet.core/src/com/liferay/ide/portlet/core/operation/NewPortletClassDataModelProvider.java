@@ -1016,6 +1016,10 @@ public class NewPortletClassDataModelProvider
 		if (!Path.ROOT.isValidPath(folderValue)) {
 			return LiferayCore.createErrorStatus(Msgs.folderValueInvalid);
 		}
+		
+        if( folderValue.length() > 1 && folderValue.startsWith( "." ) ){
+            return LiferayCore.createErrorStatus( Msgs.folderValueInvalid );
+        }
 
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 
