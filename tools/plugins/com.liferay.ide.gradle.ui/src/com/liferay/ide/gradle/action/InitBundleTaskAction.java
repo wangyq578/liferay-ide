@@ -14,6 +14,15 @@
 
 package com.liferay.ide.gradle.action;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jface.action.IAction;
+
+import com.liferay.ide.core.ILiferayProject;
+import com.liferay.ide.core.IWorkspaceProject;
+import com.liferay.ide.core.LiferayCore;
 import com.liferay.ide.core.util.CoreUtil;
 import com.liferay.ide.core.util.FileUtil;
 import com.liferay.ide.gradle.core.GradleCore;
@@ -24,18 +33,13 @@ import com.liferay.ide.server.core.LiferayServerCore;
 import com.liferay.ide.server.core.portal.PortalBundle;
 import com.liferay.ide.server.util.ServerUtil;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.NullProgressMonitor;
-
 /**
  * @author Terry Jia
  * @author Charles Wu
  */
 public class InitBundleTaskAction extends GradleTaskAction {
 
-	protected void afterTask() {
+	protected void afterTask() {	    
 		IProject project = LiferayWorkspaceUtil.getWorkspaceProject();
 
 		IPath bundlesLocation = LiferayWorkspaceUtil.getHomeLocation(project);
@@ -64,7 +68,7 @@ public class InitBundleTaskAction extends GradleTaskAction {
 
 					pluginsSDK.refreshLocal(IResource.DEPTH_INFINITE, null);
 				}
-			}
+			}			
 		}
 		catch (Exception e) {
 			GradleCore.logError("Adding server failed", e);
@@ -72,8 +76,14 @@ public class InitBundleTaskAction extends GradleTaskAction {
 	}
 
 	@Override
-	protected String getGradleTask() {
+    protected String getGradleTask() {
 		return "initBundle";
 	}
 
+	@Override
+    protected void setEnableTaskAction(IAction action) {
+	    if(LiferayWorkspaceUtil.isValidWorkspace( project )==false) {
+	        action.setEnabled( false );
+	    }
+    }
 }
