@@ -50,6 +50,10 @@ public class OpenLiferayHomeFolderServerAction extends AbstractServerRunningActi
         if( selectedServer != null )
         {
             final IPath path = ServerUtil.getLiferayRuntime( selectedServer.getRuntime() ).getAppServerDir();
+            
+            if(path == null) {
+            	return;
+            }
 
             try
             {
