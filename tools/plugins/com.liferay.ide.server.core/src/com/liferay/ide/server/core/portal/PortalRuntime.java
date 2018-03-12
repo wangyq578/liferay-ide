@@ -71,14 +71,6 @@ public class PortalRuntime extends RuntimeDelegate implements ILiferayRuntime, P
 
     public IPath getAppServerDir()
     {   
-    	if(getPortalBundle() == null) 
-    	{
-        	String msg = "Portal bundle does not exist.";
-        	
-        	LiferayServerCore.logError(msg);
-        	
-        	return null;
-    	}
         return getPortalBundle().getAppServerDir();
     }
 

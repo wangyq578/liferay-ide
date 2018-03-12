@@ -16,6 +16,7 @@
 package com.liferay.ide.server.ui.action;
 
 import com.liferay.ide.core.util.CoreUtil;
+import com.liferay.ide.server.core.portal.PortalRuntime;
 import com.liferay.ide.server.ui.LiferayServerUI;
 import com.liferay.ide.server.ui.util.ServerUIUtil;
 import com.liferay.ide.server.util.ServerUtil;
@@ -23,10 +24,13 @@ import com.liferay.ide.server.util.ServerUtil;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.wst.server.core.IServer;
+
 
 /**
  * @author Terry Jia
@@ -48,13 +52,21 @@ public class OpenLiferayHomeFolderServerAction extends AbstractServerRunningActi
     public void run( IAction action )
     {
         if( selectedServer != null )
-        {
-            final IPath path = ServerUtil.getLiferayRuntime( selectedServer.getRuntime() ).getAppServerDir();
-            
-            if(path == null) {
-            	return;
-            }
-
+        { 
+        	PortalRuntime portalruntime = (PortalRuntime)ServerUtil.getLiferayRuntime( selectedServer.getRuntime() );
+        	
+        	IStatus status = portalruntime.validate();
+        	
+        	if(status != Status.OK_STATUS) {
+        		String msg = "Portal bundle does not exist.";
+        		
+        		LiferayServerUI.logError(msg);
+      
+        		return ;
+        	}
+        	
+        	final IPath path = portalruntime.getAppServerDir();
+        	
             try
             {
                 ServerUIUtil.openFileInSystemExplorer( path );

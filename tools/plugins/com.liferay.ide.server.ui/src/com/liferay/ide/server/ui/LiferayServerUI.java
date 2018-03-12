@@ -19,6 +19,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -90,6 +91,16 @@ public class LiferayServerUI extends AbstractUIPlugin
     {
         getDefault().getLog().log( createErrorStatus( msg, ex ) );
     }
+    
+    public static void logError(String msg) {
+		logError(createErrorStatus(msg));
+	}
+ 
+    public static void logError(IStatus status) {
+		ILog log = getDefault().getLog();
+
+		log.log(status);
+	}
 
     public static IStatus createErrorStatus( String msg )
     {
